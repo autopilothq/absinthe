@@ -107,7 +107,7 @@ defmodule Absinthe.Type.Interface do
     case resolver.(obj, env) do
       nil ->
         nil
-      ident when is_atom(ident) ->
+      ident when is_atom(ident) or is_binary(ident) ->
         if opts[:lookup] do
           Absinthe.Schema.lookup_type(schema, ident)
         else
@@ -160,11 +160,11 @@ defmodule Absinthe.Type.Interface do
   end
   defp covariant?(nil, _, _), do: false
   defp covariant?(_, nil, _), do: false
-  defp covariant?(itype, type, schema) when is_atom(itype) do
+  defp covariant?(itype, type, schema) when is_atom(itype) or is_binary(itype) do
     itype = schema.__absinthe_type__(itype)
     covariant?(itype, type, schema)
   end
-  defp covariant?(itype, type, schema) when is_atom(type) do
+  defp covariant?(itype, type, schema) when is_atom(type) or is_binary(type) do
     type = schema.__absinthe_type__(type)
     covariant?(itype, type, schema)
   end
